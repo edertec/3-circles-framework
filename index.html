@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliador de Oportunidades Agênticas - Framework dos 3 Círculos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .red-flag-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .circle-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .circle-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .circle-number {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .result-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 10px;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .verdict {
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .verdict.viable {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .verdict.risky {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        .verdict.inviable {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .spar-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .spar-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .spar-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .opportunities-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .opportunity-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .opportunity-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .opportunity-item h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .opportunity-item .verdict-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-viable {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-risky {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-inviable {
+            background: #dc3545;
+            color: white;
+        }
+
+        .helper-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Avaliador de Oportunidades Agênticas</h1>
+            <p>Framework dos 3 Círculos - Agentic AI</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Lista de Oportunidades Salvas -->
+            <div id="savedOpportunities" class="opportunities-list" style="display: none;">
+                <h2 class="section-title">Oportunidades Avaliadas</h2>
+                <div id="opportunitiesList"></div>
+            </div>
+
+            <!-- Formulário Principal -->
+            <div id="mainForm">
+                <div class="section">
+                    <h2 class="section-title">Informações Básicas</h2>
+                    
+                    <div class="form-group">
+                        <label for="opportunityName">Nome da Oportunidade *</label>
+                        <input type="text" id="opportunityName" required placeholder="Ex: Automação de Aprovação de Despesas">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="opportunityDescription">Descrição do Processo/Objetivo *</label>
+                        <textarea id="opportunityDescription" required placeholder="Descreva o processo ou objetivo que você deseja transformar em um Agente de IA..."></textarea>
+                        <div class="helper-text">Inclua o objetivo principal, quem executa hoje e quais ferramentas são usadas</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentExecutor">Quem executa hoje?</label>
+                        <input type="text" id="currentExecutor" placeholder="Ex: Equipe financeira, gerentes de projeto...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentTools">Quais ferramentas são usadas?</label>
+                        <input type="text" id="currentTools" placeholder="Ex: Excel, SAP, e-mail, planilhas...">
+                    </div>
+                </div>
+
+                <!-- CÍRCULO 1: Red Flags -->
+                <div class="circle-section">
+                    <div class="circle-title">
+                        <div class="circle-number">1</div>
+                        <span>Círculo 1: Verificação de Red Flags</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>A tarefa exige criatividade genuína ou empatia profunda? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="creativity" value="high" required>
+                                <span><strong>Alta:</strong> Requer ideação criativa original ou ressonância emocional profunda</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="creativity" value="medium">
+                                <span><strong>Média:</strong> Alguma criatividade necessária, mas dentro de padrões</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="creativity" value="low">
+                                <span><strong>Baixa:</strong> Processo estruturado com pouca necessidade criativa</span>
+                            </label>
+                        </div>
+                        <div class="red-flag-box">
+                            ⚠️ <strong>Red Flag:</strong> Se ALTA, considere manter humanos no comando (gestão de relacionamento sensível, campanhas criativas do zero)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>A decisão requer julgamento estratégico complexo? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="judgment" value="high" required>
+                                <span><strong>Alta:</strong> Decisões baseadas em contexto amplo de mercado e intuição</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="judgment" value="medium">
+                                <span><strong>Média:</strong> Algumas decisões requerem interpretação contextual</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="judgment" value="low">
+                                <span><strong>Baixa:</strong> Decisões baseadas em regras claras e dados objetivos</span>
+                            </label>
+                        </div>
+                        <div class="red-flag-box">
+                            ⚠️ <strong>Red Flag:</strong> Se ALTA, agentes carecem de intuição de mercado necessária
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Qual o nível de complexidade e imprevisibilidade? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="complexity" value="high" required>
+                                <span><strong>Alta:</strong> Muitas variáveis únicas e interações emocionais imprevisíveis</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="complexity" value="medium">
+                                <span><strong>Média:</strong> Algumas exceções e variações, mas gerenciáveis</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="complexity" value="low">
+                                <span><strong>Baixa:</strong> Processo previsível com padrões claros</span>
+                            </label>
+                        </div>
+                        <div class="red-flag-box">
+                            ⚠️ <strong>Red Flag:</strong> Se ALTA, cenário muito complexo para agentes (ex: suporte excepcional de alta complexidade)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Há necessidade de autoridade regulatória ou responsabilidade legal? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="authority" value="yes" required>
+                                <span><strong>Sim:</strong> Decisões críticas que exigem responsabilidade legal/ética</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="authority" value="no">
+                                <span><strong>Não:</strong> Sem implicações legais críticas</span>
+                            </label>
+                        </div>
+                        <div class="red-flag-box">
+                            ⚠️ <strong>Red Flag:</strong> Se SIM, agentes não devem ter autonomia final (ex: decisões de investimento sem supervisão)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÍRCULO 2: SPAR Framework -->
+                <div class="circle-section">
+                    <div class="circle-title">
+                        <div class="circle-number">2</div>
+                        <span>Círculo 2: Viabilidade Técnica (SPAR)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>S (Sense/Sentir):</strong> O agente consegue "ler" o ambiente digitalmente? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="sense" value="yes" required>
+                                <span><strong>Sim:</strong> Dados digitais e gatilhos estão disponíveis</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="sense" value="partial">
+                                <span><strong>Parcialmente:</strong> Alguns dados disponíveis, outros precisam ser digitalizados</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="sense" value="no">
+                                <span><strong>Não:</strong> Processo principalmente manual sem dados digitais</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>P (Plan/Planejar):</strong> A tarefa segue uma lógica que pode ser raciocinada? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="plan" value="yes" required>
+                                <span><strong>Sim:</strong> Pode ser quebrada em passos lógicos claros</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="plan" value="partial">
+                                <span><strong>Parcialmente:</strong> Algumas partes são lógicas, outras intuitivas</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="plan" value="no">
+                                <span><strong>Não:</strong> Processo puramente intuitivo sem lógica clara</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>A (Act/Agir):</strong> Existem "mãos digitais" (APIs/Software) para o agente usar? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="act" value="yes" required>
+                                <span><strong>Sim:</strong> APIs e ferramentas digitais claramente disponíveis</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="act" value="partial">
+                                <span><strong>Parcialmente:</strong> Algumas ferramentas disponíveis, outras precisam ser desenvolvidas</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="act" value="no">
+                                <span><strong>Não:</strong> Ações são principalmente físicas ou sem interface digital</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>R (Reflect/Refletir):</strong> Há um loop de feedback claro para aprendizado? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="reflect" value="yes" required>
+                                <span><strong>Sim:</strong> Feedback claro sobre sucesso/falha das ações</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="reflect" value="partial">
+                                <span><strong>Parcialmente:</strong> Algum feedback disponível mas não estruturado</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="reflect" value="no">
+                                <span><strong>Não:</strong> Difícil medir se o agente acertou</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÍRCULO 3: Impacto e Valor -->
+                <div class="circle-section">
+                    <div class="circle-title">
+                        <div class="circle-number">3</div>
+                        <span>Círculo 3: Impacto e Valor Potencial</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Volume/Frequência da tarefa *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="volume" value="high" required>
+                                <span><strong>Alta:</strong> Executada centenas/milhares de vezes por mês</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="volume" value="medium">
+                                <span><strong>Média:</strong> Executada dezenas de vezes por mês</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="volume" value="low">
+                                <span><strong>Baixa:</strong> Executada poucas vezes por mês</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tempo gasto atualmente (por pessoa/equipe) *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="timeSpent" value="high" required>
+                                <span><strong>Alto:</strong> Mais de 20 horas/semana</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="timeSpent" value="medium">
+                                <span><strong>Médio:</strong> 5-20 horas/semana</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="timeSpent" value="low">
+                                <span><strong>Baixo:</strong> Menos de 5 horas/semana</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Impacto no negócio se melhorado *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="impact" value="high" required>
+                                <span><strong>Alto:</strong> Impacto direto em receita, satisfação do cliente ou eficiência operacional crítica</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="impact" value="medium">
+                                <span><strong>Médio:</strong> Melhoria notável mas não crítica</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="impact" value="low">
+                                <span><strong>Baixo:</strong> Benefício marginal</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dor/Frustração atual dos usuários *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="pain" value="high" required>
+                                <span><strong>Alta:</strong> Processo extremamente frustrante e repetitivo</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pain" value="medium">
+                                <span><strong>Média:</strong> Alguma frustração mas tolerável</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pain" value="low">
+                                <span><strong>Baixa:</strong> Processo aceitável</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn" onclick="evaluateOpportunity()">🚀 Avaliar Oportunidade</button>
+            </div>
+
+            <!-- Resultados -->
+            <div id="results" class="results">
+                <div class="result-card">
+                    <h2 class="result-title">📊 Análise da Oportunidade</h2>
+                    <h3 id="resultOpportunityName" style="color: #667eea; margin-bottom: 20px;"></h3>
+                    
+                    <div class="score-display">
+                        <div class="score-item">
+                            <div class="score-label">Red Flags</div>
+                            <div class="score-value" id="redFlagScore">0</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">SPAR Viabilidade</div>
+                            <div class="score-value" id="sparScore">0%</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Impacto/Valor</div>
+                            <div class="score-value" id="impactScore">0%</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Score Final</div>
+                            <div class="score-value" id="finalScore">0%</div>
+                        </div>
+                    </div>
+
+                    <div id="verdict" class="verdict"></div>
+
+                    <div class="spar-analysis">
+                        <div class="spar-item">
+                            <h4>🔍 Sense (Sentir)</h4>
+                            <p id="senseAnalysis"></p>
+                        </div>
+                        <div class="spar-item">
+                            <h4>🧠 Plan (Planejar)</h4>
+                            <p id="planAnalysis"></p>
+                        </div>
+                        <div class="spar-item">
+                            <h4>⚡ Act (Agir)</h4>
+                            <p id="actAnalysis"></p>
+                        </div>
+                        <div class="spar-item">
+                            <h4>🔄 Reflect (Refletir)</h4>
+                            <p id="reflectAnalysis"></p>
+                        </div>
+                    </div>
+
+                    <div id="recommendations" style="margin-top: 30px;">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">💡 Recomendações</h3>
+                        <div id="recommendationsList"></div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">↩️ Nova Avaliação</button>
+                        <button type="button" class="btn" onclick="saveOpportunity()">💾 Salvar Oportunidade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de armazenamento
+        let savedOpportunities = [];
+        let currentEvaluation = null;
+
+        // Carregar oportunidades salvas do localStorage
+        function loadSavedOpportunities() {
+            try {
+                const stored = localStorage.getItem('opportunities');
+                if (stored) {
+                    savedOpportunities = JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Erro ao carregar oportunidades:', e);
+                savedOpportunities = [];
+            }
+        }
+
+        // Atualizar lista de oportunidades salvas
+        function updateOpportunitiesList() {
+            const list = document.getElementById('opportunitiesList');
+            const container = document.getElementById('savedOpportunities');
+            
+            if (savedOpportunities.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            list.innerHTML = savedOpportunities.map((opp, index) => `
+                <div class="opportunity-item" onclick="viewOpportunity(${index})">
+                    <h3>${opp.name}</h3>
+                    <p style="color: #666; margin: 5px 0;">${opp.description.substring(0, 100)}...</p>
+                    <span class="verdict-badge badge-${opp.verdictClass}">${opp.verdict}</span>
+                    <p style="font-size: 0.9em; color: #999; margin-top: 10px;">
+                        Score: ${opp.finalScore}% | Avaliado em: ${new Date(opp.date).toLocaleDateString('pt-BR')}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        // Função principal de avaliação
+        function evaluateOpportunity() {
+            console.log('Função evaluateOpportunity chamada');
+            
+            // Validar campos de texto obrigatórios
+            const name = document.getElementById('opportunityName').value.trim();
+            const description = document.getElementById('opportunityDescription').value.trim();
+            
+            if (!name || !description) {
+                alert('Por favor, preencha o nome e a descrição da oportunidade.');
+                return;
+            }
+
+            // Validar campos radio obrigatórios
+            const requiredRadios = [
+                'creativity', 'judgment', 'complexity', 'authority',
+                'sense', 'plan', 'act', 'reflect',
+                'volume', 'timeSpent', 'impact', 'pain'
+            ];
+
+            const missingFields = [];
+            for (let field of requiredRadios) {
+                const selected = document.querySelector(`input[name="${field}"]:checked`);
+                if (!selected) {
+                    missingFields.push(field);
+                }
+            }
+
+            if (missingFields.length > 0) {
+                alert('Por favor, responda todas as perguntas obrigatórias. Campos faltando: ' + missingFields.join(', '));
+                return;
+            }
+
+            // Coletar dados
+            const data = {
+                name: name,
+                description: description,
+                executor: document.getElementById('currentExecutor').value,
+                tools: document.getElementById('currentTools').value,
+                
+                // Red Flags
+                creativity: document.querySelector('input[name="creativity"]:checked').value,
+                judgment: document.querySelector('input[name="judgment"]:checked').value,
+                complexity: document.querySelector('input[name="complexity"]:checked').value,
+                authority: document.querySelector('input[name="authority"]:checked').value,
+                
+                // SPAR
+                sense: document.querySelector('input[name="sense"]:checked').value,
+                plan: document.querySelector('input[name="plan"]:checked').value,
+                act: document.querySelector('input[name="act"]:checked').value,
+                reflect: document.querySelector('input[name="reflect"]:checked').value,
+                
+                // Impacto
+                volume: document.querySelector('input[name="volume"]:checked').value,
+                timeSpent: document.querySelector('input[name="timeSpent"]:checked').value,
+                impact: document.querySelector('input[name="impact"]:checked').value,
+                pain: document.querySelector('input[name="pain"]:checked').value
+            };
+
+            console.log('Dados coletados:', data);
+
+            // Calcular Red Flags (critérios eliminatórios)
+            let redFlags = 0;
+            const redFlagReasons = [];
+            
+            if (data.creativity === 'high') {
+                redFlags++;
+                redFlagReasons.push('Alta necessidade de criatividade/empatia genuína');
+            }
+            if (data.judgment === 'high') {
+                redFlags++;
+                redFlagReasons.push('Julgamento estratégico complexo requerido');
+            }
+            if (data.complexity === 'high') {
+                redFlags++;
+                redFlagReasons.push('Complexidade excessiva e imprevisibilidade');
+            }
+            if (data.authority === 'yes') {
+                redFlags++;
+                redFlagReasons.push('Necessita autoridade regulatória/responsabilidade legal');
+            }
+
+            // Calcular SPAR (0-100%)
+            const sparScores = {
+                sense: data.sense === 'yes' ? 100 : data.sense === 'partial' ? 50 : 0,
+                plan: data.plan === 'yes' ? 100 : data.plan === 'partial' ? 50 : 0,
+                act: data.act === 'yes' ? 100 : data.act === 'partial' ? 50 : 0,
+                reflect: data.reflect === 'yes' ? 100 : data.reflect === 'partial' ? 50 : 0
+            };
+            const sparAverage = (sparScores.sense + sparScores.plan + sparScores.act + sparScores.reflect) / 4;
+
+            // Calcular Impacto (0-100%)
+            const impactScores = {
+                volume: data.volume === 'high' ? 100 : data.volume === 'medium' ? 60 : 30,
+                timeSpent: data.timeSpent === 'high' ? 100 : data.timeSpent === 'medium' ? 60 : 30,
+                impact: data.impact === 'high' ? 100 : data.impact === 'medium' ? 60 : 30,
+                pain: data.pain === 'high' ? 100 : data.pain === 'medium' ? 60 : 30
+            };
+            const impactAverage = (impactScores.volume + impactScores.timeSpent + impactScores.impact + impactScores.pain) / 4;
+
+            // Score final (SPAR * Impacto, mas zerado se houver Red Flags críticos)
+            let finalScore = (sparAverage * impactAverage) / 100;
+            
+            // Determinar veredito
+            let verdict, verdictClass;
+            if (redFlags >= 2) {
+                verdict = 'INVIÁVEL';
+                verdictClass = 'inviable';
+                finalScore = 0;
+            } else if (redFlags === 1 || sparAverage < 50) {
+                verdict = 'ARRISCADO';
+                verdictClass = 'risky';
+            } else if (finalScore >= 70) {
+                verdict = 'VIÁVEL';
+                verdictClass = 'viable';
+            } else if (finalScore >= 50) {
+                verdict = 'ARRISCADO';
+                verdictClass = 'risky';
+            } else {
+                verdict = 'INVIÁVEL';
+                verdictClass = 'inviable';
+            }
+
+            // Armazenar avaliação atual
+            currentEvaluation = {
+                data,
+                redFlags,
+                redFlagReasons,
+                sparScores,
+                sparAverage,
+                impactScores,
+                impactAverage,
+                finalScore: Math.round(finalScore),
+                verdict,
+                verdictClass
+            };
+
+            console.log('Avaliação completa:', currentEvaluation);
+
+            // Exibir resultados
+            displayResults(currentEvaluation);
+        }
+
+        function displayResults(evaluation) {
+            const { data, redFlags, redFlagReasons, sparScores, sparAverage, impactScores, impactAverage, finalScore, verdict, verdictClass } = evaluation;
+
+            // Atualizar nome
+            document.getElementById('resultOpportunityName').textContent = data.name;
+
+            // Atualizar scores
+            document.getElementById('redFlagScore').textContent = redFlags;
+            document.getElementById('redFlagScore').style.color = redFlags >= 2 ? '#dc3545' : redFlags === 1 ? '#ffc107' : '#28a745';
+            
+            document.getElementById('sparScore').textContent = Math.round(sparAverage) + '%';
+            document.getElementById('impactScore').textContent = Math.round(impactAverage) + '%';
+            document.getElementById('finalScore').textContent = finalScore + '%';
+
+            // Atualizar veredito
+            const verdictEl = document.getElementById('verdict');
+            verdictEl.className = `verdict ${verdictClass}`;
+            
+            let verdictText = `<h2>🎯 Veredito: ${verdict}</h2>`;
+            
+            if (verdictClass === 'inviable') {
+                verdictText += `<p style="margin-top: 15px;"><strong>Esta oportunidade não está no "Sweet Spot".</strong></p>`;
+                if (redFlagReasons.length > 0) {
+                    verdictText += `<p>Red Flags identificados: ${redFlagReasons.join(', ')}.</p>`;
+                }
+                verdictText += `<p>Recomendamos manter humanos no comando, possivelmente usando IA apenas como copiloto (Nível 2).</p>`;
+            } else if (verdictClass === 'risky') {
+                verdictText += `<p style="margin-top: 15px;"><strong>Esta oportunidade tem potencial, mas requer atenção especial.</strong></p>`;
+                if (redFlagReasons.length > 0) {
+                    verdictText += `<p>Atenção: ${redFlagReasons.join(', ')}.</p>`;
+                }
+                verdictText += `<p>Considere uma implementação gradual começando com supervisão humana (Nível 3) antes de avançar para maior autonomia.</p>`;
+            } else {
+                verdictText += `<p style="margin-top: 15px;"><strong>Esta é uma excelente candidata para um Agente de IA!</strong></p>`;
+                verdictText += `<p>O foco deve ser em dar ao agente acesso às ferramentas necessárias e construir um sistema robusto de monitoramento.</p>`;
+            }
+            
+            verdictEl.innerHTML = verdictText;
+
+            // Análise SPAR
+            document.getElementById('senseAnalysis').innerHTML = 
+                `<strong>${sparScores.sense}%</strong> - ${getSparAnalysis('sense', data.sense)}`;
+            document.getElementById('planAnalysis').innerHTML = 
+                `<strong>${sparScores.plan}%</strong> - ${getSparAnalysis('plan', data.plan)}`;
+            document.getElementById('actAnalysis').innerHTML = 
+                `<strong>${sparScores.act}%</strong> - ${getSparAnalysis('act', data.act)}`;
+            document.getElementById('reflectAnalysis').innerHTML = 
+                `<strong>${sparScores.reflect}%</strong> - ${getSparAnalysis('reflect', data.reflect)}`;
+
+            // Recomendações
+            const recommendations = generateRecommendations(evaluation);
+            document.getElementById('recommendationsList').innerHTML = recommendations
+                .map(rec => `<div class="spar-item"><p>${rec}</p></div>`).join('');
+
+            // Mostrar resultados
+            document.getElementById('mainForm').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function getSparAnalysis(type, value) {
+            const analyses = {
+                sense: {
+                    yes: 'Dados digitais e gatilhos estão prontamente disponíveis. Ótimo para percepção do ambiente.',
+                    partial: 'Alguns dados disponíveis, mas pode ser necessário digitalizar processos adicionais.',
+                    no: 'Processo principalmente manual. Será necessário investimento significativo em digitalização.'
+                },
+                plan: {
+                    yes: 'Tarefa pode ser decomposta em passos lógicos claros. Excelente para planejamento agêntico.',
+                    partial: 'Algumas partes são estruturadas, outras requerem intuição. Pode funcionar com supervisão.',
+                    no: 'Processo puramente intuitivo. Agentes terão dificuldade em planejar adequadamente.'
+                },
+                act: {
+                    yes: 'APIs e ferramentas digitais disponíveis. O agente poderá executar ações diretamente.',
+                    partial: 'Algumas ferramentas disponíveis. Pode ser necessário desenvolvimento adicional.',
+                    no: 'Ações são principalmente físicas ou sem interface digital. Limitará muito a capacidade do agente.'
+                },
+                reflect: {
+                    yes: 'Feedback claro disponível. O agente poderá aprender e melhorar continuamente.',
+                    partial: 'Algum feedback existe, mas não estruturado. Pode ser suficiente com refinamento.',
+                    no: 'Difícil medir sucesso. O agente terá dificuldade em auto-melhorar.'
+                }
+            };
+            return analyses[type][value];
+        }
+
+        function generateRecommendations(evaluation) {
+            const { data, redFlags, sparScores, verdictClass } = evaluation;
+            const recommendations = [];
+
+            if (verdictClass === 'viable') {
+                recommendations.push('✅ <strong>Prioridade Alta:</strong> Esta oportunidade está no Sweet Spot. Recomendamos avançar com implementação.');
+                
+                if (data.tools) {
+                    recommendations.push(`🔧 <strong>Ferramentas identificadas:</strong> Garanta que o agente tenha acesso às seguintes ferramentas: ${data.tools}`);
+                }
+                
+                recommendations.push('📊 <strong>Próximos passos:</strong> Desenvolva um protótipo (POC) com 1-2 casos de uso específicos antes de escalar.');
+                recommendations.push('🎯 <strong>Nível recomendado:</strong> Comece com Nível 3 (Agentic Workflows) e evolua para Nível 4 conforme ganhar confiança.');
+            }
+
+            if (verdictClass === 'risky') {
+                if (redFlags > 0) {
+                    recommendations.push('⚠️ <strong>Atenção:</strong> Há Red Flags presentes. Mantenha supervisão humana próxima inicialmente.');
+                }
+                
+                if (sparScores.sense < 100) {
+                    recommendations.push('🔍 <strong>Melhorar Sense:</strong> Invista em digitalização de dados e criação de gatilhos claros antes de implementar.');
+                }
+                if (sparScores.plan < 100) {
+                    recommendations.push('🧠 <strong>Melhorar Plan:</strong> Documente a lógica do processo em fluxogramas claros para facilitar o raciocínio do agente.');
+                }
+                if (sparScores.act < 100) {
+                    recommendations.push('⚡ <strong>Melhorar Act:</strong> Desenvolva APIs ou integrações necessárias para que o agente possa executar ações.');
+                }
+                if (sparScores.reflect < 100) {
+                    recommendations.push('🔄 <strong>Melhorar Reflect:</strong> Crie métricas claras e sistemas de feedback para o agente aprender.');
+                }
+                
+                recommendations.push('🎯 <strong>Nível recomendado:</strong> Comece com Nível 2 (Intelligent Automation com supervisão) ou Nível 3 com forte oversight humano.');
+            }
+
+            if (verdictClass === 'inviable') {
+                recommendations.push('🛑 <strong>Não recomendado para Agente Autônomo:</strong> Esta tarefa deve permanecer sob controle humano.');
+                
+                if (redFlags >= 2) {
+                    recommendations.push('⚠️ <strong>Múltiplos Red Flags:</strong> As características desta tarefa não são adequadas para automação agêntica.');
+                }
+                
+                recommendations.push('💡 <strong>Alternativa:</strong> Considere usar IA como assistente (Nível 2) para apoiar humanos, não substituí-los.');
+                recommendations.push('👥 <strong>Foco humano:</strong> Invista em capacitação da equipe humana para lidar com a complexidade desta tarefa.');
+            }
+
+            return recommendations;
+        }
+
+        function saveOpportunity() {
+            if (!currentEvaluation) {
+                alert('Nenhuma avaliação para salvar.');
+                return;
+            }
+
+            const opportunity = {
+                name: currentEvaluation.data.name,
+                description: currentEvaluation.data.description,
+                executor: currentEvaluation.data.executor,
+                tools: currentEvaluation.data.tools,
+                date: new Date().toISOString(),
+                finalScore: currentEvaluation.finalScore,
+                verdict: currentEvaluation.verdict,
+                verdictClass: currentEvaluation.verdictClass,
+                evaluation: currentEvaluation
+            };
+
+            savedOpportunities.unshift(opportunity);
+            localStorage.setItem('opportunities', JSON.stringify(savedOpportunities));
+            
+            alert('✅ Oportunidade salva com sucesso!');
+            resetForm();
+        }
+
+        function viewOpportunity(index) {
+            const opportunity = savedOpportunities[index];
+            currentEvaluation = opportunity.evaluation;
+            displayResults(currentEvaluation);
+        }
+
+        function resetForm() {
+            document.getElementById('mainForm').style.display = 'block';
+            document.getElementById('results').classList.remove('show');
+            
+            // Limpar campos de texto
+            document.getElementById('opportunityName').value = '';
+            document.getElementById('opportunityDescription').value = '';
+            document.getElementById('currentExecutor').value = '';
+            document.getElementById('currentTools').value = '';
+            
+            // Limpar todos os radio buttons
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => radio.checked = false);
+            
+            currentEvaluation = null;
+            updateOpportunitiesList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página carregada');
+            loadSavedOpportunities();
+            updateOpportunitiesList();
+        });
+    </script>
+</body>
+</html>
